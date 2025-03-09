@@ -1,5 +1,6 @@
 package com.example.resmanback.service;
 
+import com.example.resmanback.exception.OrderNotFoundException;
 import com.example.resmanback.model.Order;
 import com.example.resmanback.repository.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class OrderService {
     }
 
     public void deleteOrder(Long id) {
+        if (!orderRepository.existsById(id)) {
+            throw new OrderNotFoundException("Order with ID " + id + " not found");
+        }
         orderRepository.deleteById(id);
     }
 }
