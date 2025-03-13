@@ -18,9 +18,9 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String dishName;
+    @ManyToOne
+    @JoinColumn(name = "dish_id", nullable = false)
+    private Dish dish;
 
     private int quantity;
-
-    private double price;
 }

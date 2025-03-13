@@ -1,6 +1,7 @@
 package com.example.resmanback.controller;
 
 import com.example.resmanback.model.Order;
+import com.example.resmanback.model.dto.OrderRequest;
 import com.example.resmanback.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,14 +29,15 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        return ResponseEntity.ok(orderService.saveOrder(order));
+    public ResponseEntity<Order> createOrder(@RequestBody OrderRequest orderRequest) {
+        System.out.println("Received Order: " + orderRequest); // Лог запроса
+        return ResponseEntity.ok(orderService.saveOrder(orderRequest));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order order) {
-        order.setId(id);
-        return ResponseEntity.ok(orderService.saveOrder(order));
+    public ResponseEntity<Order> updateOrder(@PathVariable Long id, OrderRequest orderRequest) {
+//        orderRequest.setId(id);
+        return ResponseEntity.ok(orderService.saveOrder(orderRequest));
     }
 
     @DeleteMapping("/{id}")
