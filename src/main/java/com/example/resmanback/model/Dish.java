@@ -24,5 +24,7 @@ public class Dish {
 
         @Column(nullable = false)
         private String category; // Например: "Main Course", "Dessert", "Beverage"
+
+        private String imageUrl;
 }
 
