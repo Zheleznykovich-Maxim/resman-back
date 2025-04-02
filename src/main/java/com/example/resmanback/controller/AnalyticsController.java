@@ -23,4 +23,9 @@ public class AnalyticsController {
         Map<String, Object> analytics = analyticsService.generateAnalytics();
         return ResponseEntity.ok(analytics);
     }
+
+    @GetMapping("/available-portions")
+    public Map<String, Integer> getAvailablePortions() {
+        return analyticsService.calculateAvailablePortions();
+    }
 }
