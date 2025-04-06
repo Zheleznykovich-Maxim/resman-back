@@ -1,5 +1,6 @@
 package com.example.resmanback.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,8 @@ import java.nio.file.Paths;
 @RequestMapping("/api/images")
 public class ImageController {
 
-    private final String imageDir = "src/main/resources/uploads/images"; // Укажи путь к папке с изображениями
+    @Value("${app.upload.dir}")
+    private String imageDir;
 
     // Эндпоинт для получения изображений
     @GetMapping("/{filename}")
