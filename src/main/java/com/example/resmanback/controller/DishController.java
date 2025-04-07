@@ -36,9 +36,10 @@ public class DishController {
     }
 
     @PutMapping("/{id}")
-    public Dish updateDish(@PathVariable Long id, @RequestBody Dish updatedDish) {
-        return dishService.updateDish(id, updatedDish);
+    public Dish updateDish(@PathVariable Long id, @ModelAttribute Dish dish, @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+        return dishService.updateDish(id, dish, image);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDish(@PathVariable Long id) {
