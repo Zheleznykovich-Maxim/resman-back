@@ -23,11 +23,17 @@ public class ImageController {
     @Value("${app.upload.dir}")
     private String imageDir;
 
+    @Value("${app.upload.gen-images.dir}")
+    private String imagePathPrefix;
+
     // Эндпоинт для получения изображений
     @GetMapping("/{filename}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
         try {
             Path filePath = Paths.get(imageDir).resolve(filename);
+            if (!filePath.toFile().exists()) {
+                filePath = Paths.get(imagePathPrefix).resolve(filename);
+            }
             File file = filePath.toFile();
 
             // Проверка на существование файла

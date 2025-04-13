@@ -1,11 +1,10 @@
 package com.example.resmanback.controller;
 
+import com.example.resmanback.model.dto.GenerateRequest;
+import com.example.resmanback.model.dto.GenerateResponse;
 import com.example.resmanback.service.DataGenerationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/generate")
@@ -17,15 +16,21 @@ public class DataGenerationController {
         this.dataGenerationService = dataGenerationService;
     }
 
-    @PostMapping("/orders")
-    public ResponseEntity<String> generateOrders(@RequestParam int count) {
-        dataGenerationService.generateOrders(count);
-        return ResponseEntity.ok("Orders generated successfully!");
+    @PostMapping("/dishes")
+    public ResponseEntity<?> generateDishes(@RequestBody GenerateRequest request) {
+        int generatedCount = dataGenerationService.generateDishes(request.getCount());
+        return ResponseEntity.ok().body(new GenerateResponse(generatedCount, "dishes"));
     }
 
-    @PostMapping("/dishes")
-    public ResponseEntity<String> generateDishes(@RequestParam int count) {
-        dataGenerationService.generateDishes(count);
-        return ResponseEntity.ok("Dishes generated successfully!");
+    @PostMapping("/ingredients")
+    public ResponseEntity<?> generateIngredients(@RequestBody GenerateRequest request) {
+        int generatedCount = dataGenerationService.generateIngredients(request.getCount());
+        return ResponseEntity.ok().body(new GenerateResponse(generatedCount, "ingredients"));
+    }
+
+    @PostMapping("/orders")
+    public ResponseEntity<?> generateOrders(@RequestBody GenerateRequest request) {
+        int generatedCount = dataGenerationService.generateOrders(request.getCount());
+        return ResponseEntity.ok().body(new GenerateResponse(generatedCount, "orders"));
     }
 }
