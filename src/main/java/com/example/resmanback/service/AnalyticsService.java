@@ -39,14 +39,15 @@ public class AnalyticsService {
      */
     public Map<String, Object> generateAnalytics() {
         List<Order> orders = orderRepository.findAll();
+        Map<String, Object> analytics = new HashMap<>();
 
+        // Категории блюд: заказы и выручка
         Map<String, Long> categoryCounts = orders.stream()
                 .flatMap(order -> order.getItems().stream())
                 .collect(Collectors.groupingBy(
                         item -> item.getDish().getCategory(),
                         Collectors.counting()
                 ));
-
         Map<String, Double> categoryRevenue = orders.stream()
                 .flatMap(order -> order.getItems().stream())
                 .collect(Collectors.groupingBy(
@@ -54,6 +55,7 @@ public class AnalyticsService {
                         Collectors.summingDouble(item -> item.getDish().getPrice() * item.getQuantity())
                 ));
 
+        // Ежедневная выручка
         Map<LocalDate, Double> dailyRevenue = orders.stream()
                 .collect(Collectors.groupingBy(
                         order -> order.getOrderDate().toLocalDate(),
@@ -62,19 +64,56 @@ public class AnalyticsService {
                                 .sum())
                 ));
 
-        Map<String, Object> analytics = new HashMap<>();
+        // Популярные и прибыльные блюда
+        Map<String, Long> dishPopularity = orders.stream()
+                .flatMap(order -> order.getItems().stream())
+                .collect(Collectors.groupingBy(
+                        item -> item.getDish().getName(),
+                        Collectors.counting()
+                ));
+        Map<String, Double> dishProfitability = orders.stream()
+                .flatMap(order -> order.getItems().stream())
+                .collect(Collectors.groupingBy(
+                        item -> item.getDish().getName(),
+                        Collectors.summingDouble(item -> item.getDish().getPrice() * item.getQuantity())
+                ));
+
+        // Топ-5 популярных блюд
+        List<Map.Entry<String, Long>> topDishes = dishPopularity.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(5)
+                .collect(Collectors.toList());
+
+        // Топ-5 прибыльных блюд
+        List<Map.Entry<String, Double>> topProfitableDishes = dishProfitability.entrySet().stream()
+                .sorted(Map.Entry.<String, Double>comparingByValue().reversed())
+                .limit(5)
+                .collect(Collectors.toList());
+
+        // Использование ингредиентов
+        Map<Object, Double> ingredientUsage = dishIngredientRepository.findAll().stream()
+                .collect(Collectors.groupingBy(
+                        dishIngredient -> dishIngredient.getIngredient().getName(),
+                        Collectors.summingDouble(dishIngredient -> dishIngredient.getAmount())
+                ));
+
+        // Остатки ингредиентов
+        Map<String, Double> ingredientStock = stockRepository.findAll().stream()
+                .collect(Collectors.toMap(
+                        stock -> stock.getIngredient().getName(),
+                        Stock::getQuantity
+                ));
+
+        // Результаты
         analytics.put("categories", new ArrayList<>(categoryCounts.keySet()));
         analytics.put("orderCounts", new ArrayList<>(categoryCounts.values()));
         analytics.put("revenue", new ArrayList<>(categoryRevenue.values()));
-
-        // Подготовка данных для графика заработка по дням
-        List<String> dates = dailyRevenue.keySet().stream()
-                .map(LocalDate::toString)
-                .collect(Collectors.toList());
-        List<Double> dailyEarnings = new ArrayList<>(dailyRevenue.values());
-
-        analytics.put("dates", dates);
-        analytics.put("dailyEarnings", dailyEarnings);
+        analytics.put("dates", new ArrayList<>(dailyRevenue.keySet()));
+        analytics.put("dailyEarnings", new ArrayList<>(dailyRevenue.values()));
+        analytics.put("topDishes", topDishes);
+        analytics.put("topProfitableDishes", topProfitableDishes);
+        analytics.put("ingredientUsage", ingredientUsage);
+        analytics.put("ingredientStock", ingredientStock);
 
         return analytics;
     }

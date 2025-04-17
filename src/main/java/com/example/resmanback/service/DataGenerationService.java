@@ -58,7 +58,7 @@ public class DataGenerationService {
             // Генерация DishIngredient
             generateDishIngredients(dish, allIngredients);
         }
-        return availableImages;
+        return count;
     }
 
 
