@@ -1,7 +1,7 @@
 package com.example.resmanback.controller;
 
 import com.example.resmanback.model.Dish;
-import com.example.resmanback.service.DishService;
+import com.example.resmanback.service.impl.DishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

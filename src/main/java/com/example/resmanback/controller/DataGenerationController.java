@@ -2,7 +2,7 @@ package com.example.resmanback.controller;
 
 import com.example.resmanback.model.dto.GenerateRequest;
 import com.example.resmanback.model.dto.GenerateResponse;
-import com.example.resmanback.service.DataGenerationService;
+import com.example.resmanback.service.impl.DataGenerationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

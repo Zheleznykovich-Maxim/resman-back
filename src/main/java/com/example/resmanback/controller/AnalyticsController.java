@@ -1,6 +1,6 @@
 package com.example.resmanback.controller;
 
-import com.example.resmanback.service.AnalyticsService;
+import com.example.resmanback.service.impl.AnalyticsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

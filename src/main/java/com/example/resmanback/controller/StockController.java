@@ -1,7 +1,7 @@
 package com.example.resmanback.controller;
 
 import com.example.resmanback.model.Stock;
-import com.example.resmanback.service.StockService;
+import com.example.resmanback.service.impl.StockService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.resmanback.service;
+package com.example.resmanback.service.impl;
 
 import com.example.resmanback.model.Ingredient;
 import com.example.resmanback.repository.IngredientRepository;

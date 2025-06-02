@@ -1,7 +1,7 @@
 package com.example.resmanback.controller;
 
 import com.example.resmanback.model.DishIngredient;
-import com.example.resmanback.service.DishIngredientService;
+import com.example.resmanback.service.impl.DishIngredientService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
